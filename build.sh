@@ -6,7 +6,7 @@ TAG=3.4.1-hadoop3.3
 
 build() {
     NAME=$1
-    IMAGE=fcjbispo/spark-$NAME:$TAG
+    IMAGE=fcjbispo/fbnet-spark-$NAME:$TAG
     cd $([ -z "$2" ] && echo "./$NAME" || echo "$2")
     echo '--------------------------' building $IMAGE in $(pwd)
     docker build -t $IMAGE .
