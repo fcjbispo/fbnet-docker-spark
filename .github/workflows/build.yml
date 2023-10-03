@@ -1,167 +1,167 @@
-name: CI to Docker Hub
+# name: CI to Docker Hub
 
-on: [push, pull_request, workflow_dispatch]
+# on: [push, pull_request, workflow_dispatch]
 
-jobs:
+# jobs:
 
-  base:
-    runs-on: ubuntu-latest
+#   base:
+#     runs-on: ubuntu-latest
 
-    steps:
+#     steps:
     
-      - name: Check Out Repo 
-        uses: actions/checkout@v2
+#       - name: Check Out Repo 
+#         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         id: buildx
+#         uses: docker/setup-buildx-action@v1
         
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v5
+#       - name: Get branch names
+#         id: branch-name
+#         uses: tj-actions/branch-names@v5
 
-      - name: Sets env vars for image_tag
-        run: |
-          IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
-          [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
-          echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+#       - name: Sets env vars for image_tag
+#         run: |
+#           IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
+#           [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
+#           echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Build and push image
-        uses: docker/build-push-action@v2
-        with:
-          context: base
-          file: base/Dockerfile
-          tags: fcjbispo/fbnet-spark-base:${{env.DOCKER_IMAGE_TAG}}
-          push: ${{ github.event_name != 'pull_request' }}
+#       - name: Build and push image
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: base
+#           file: base/Dockerfile
+#           tags: fcjbispo/fbnet-spark-base:${{env.DOCKER_IMAGE_TAG}}
+#           push: ${{ github.event_name != 'pull_request' }}
 
-  master_worker_history:
-    runs-on: ubuntu-latest
+#   master_worker_history:
+#     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        image: [master, worker, history-server]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         image: [master, worker, history-server]
 
-    needs: 'base'
-    steps:
+#     needs: 'base'
+#     steps:
     
-      - name: Check Out Repo 
-        uses: actions/checkout@v2
+#       - name: Check Out Repo 
+#         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         id: buildx
+#         uses: docker/setup-buildx-action@v1
         
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v5
+#       - name: Get branch names
+#         id: branch-name
+#         uses: tj-actions/branch-names@v5
 
-      - name: Sets env vars for image_tag
-        run: |
-          IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
-          [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
-          echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+#       - name: Sets env vars for image_tag
+#         run: |
+#           IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
+#           [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
+#           echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Build and push image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ matrix.image }}
-          file: ${{ matrix.image }}/Dockerfile
-          tags: fcjbispo/fbnet-spark-${{ matrix.image }}:${{env.DOCKER_IMAGE_TAG}}
-          push: ${{ github.event_name != 'pull_request' }}
+#       - name: Build and push image
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: ${{ matrix.image }}
+#           file: ${{ matrix.image }}/Dockerfile
+#           tags: fcjbispo/fbnet-spark-${{ matrix.image }}:${{env.DOCKER_IMAGE_TAG}}
+#           push: ${{ github.event_name != 'pull_request' }}
 
-  submit:
-    runs-on: ubuntu-latest
+#   submit:
+#     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        image: [submit]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         image: [submit]
 
-    needs: 'base'
-    steps:
+#     needs: 'base'
+#     steps:
     
-      - name: Check Out Repo 
-        uses: actions/checkout@v2
+#       - name: Check Out Repo 
+#         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         id: buildx
+#         uses: docker/setup-buildx-action@v1
         
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v5
+#       - name: Get branch names
+#         id: branch-name
+#         uses: tj-actions/branch-names@v5
 
-      - name: Sets env vars for image_tag
-        run: |
-          IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
-          [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
-          echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+#       - name: Sets env vars for image_tag
+#         run: |
+#           IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
+#           [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
+#           echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Build and push image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ matrix.image }}
-          file: ${{ matrix.image }}/Dockerfile
-          tags: fcjbispo/fbnet-spark-${{ matrix.image }}:${{env.DOCKER_IMAGE_TAG}}
-          push: ${{ github.event_name != 'pull_request' }}
+#       - name: Build and push image
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: ${{ matrix.image }}
+#           file: ${{ matrix.image }}/Dockerfile
+#           tags: fcjbispo/fbnet-spark-${{ matrix.image }}:${{env.DOCKER_IMAGE_TAG}}
+#           push: ${{ github.event_name != 'pull_request' }}
 
-  template:
-    runs-on: ubuntu-latest
+#   template:
+#     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        template: [maven, sbt, python]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         template: [maven, sbt, python]
 
-    needs: 'submit'
-    steps:
+#     needs: 'submit'
+#     steps:
     
-      - name: Check Out Repo 
-        uses: actions/checkout@v2
+#       - name: Check Out Repo 
+#         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+#       - name: Set up Docker Buildx
+#         id: buildx
+#         uses: docker/setup-buildx-action@v1
         
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v5
+#       - name: Get branch names
+#         id: branch-name
+#         uses: tj-actions/branch-names@v5
 
-      - name: Sets env vars for image_tag
-        run: |
-          IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
-          [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
-          echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+#       - name: Sets env vars for image_tag
+#         run: |
+#           IMAGE_TAG=${{ steps.branch-name.outputs.current_branch }}
+#           [ "$IMAGE_TAG" == "master" ] && IMAGE_TAG=latest
+#           echo "DOCKER_IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Build and push image
-        uses: docker/build-push-action@v2
-        with:
-          context: template/${{ matrix.template }}
-          file: template/${{ matrix.template }}/Dockerfile
-          tags: fcjbispo/fbnet-spark-${{ matrix.template }}-template:${{env.DOCKER_IMAGE_TAG}}
-          push: ${{ github.event_name != 'pull_request' }}
+#       - name: Build and push image
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: template/${{ matrix.template }}
+#           file: template/${{ matrix.template }}/Dockerfile
+#           tags: fcjbispo/fbnet-spark-${{ matrix.template }}-template:${{env.DOCKER_IMAGE_TAG}}
+#           push: ${{ github.event_name != 'pull_request' }}
