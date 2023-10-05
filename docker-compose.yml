@@ -1,7 +1,7 @@
 version: '3'
 services:
   spark-master:
-    image: fcjbispo/spark-master:3.4.1-hadoop3.3
+    image: fcjbispo/fbnet-spark-master:3.4.1-hadoop3.3
     container_name: fbnet-spark-master
     hostname: spark-master
     networks:
@@ -14,7 +14,7 @@ services:
       - INIT_DAEMON_STEP=true
 
   spark-worker1:
-    image: fcjbispo/spark-worker:3.4.1-hadoop3.3
+    image: fcjbispo/fbnet-spark-worker:3.4.1-hadoop3.3
     container_name: fbnet-spark-worker1
     hostname: spark-worker1
     networks:
@@ -28,7 +28,7 @@ services:
       - "SPARK_MASTER=spark://spark-master:7077"
 
   spark-worker2:
-    image: fcjbispo/spark-worker:3.4.1-hadoop3.3
+    image: fcjbispo/fbnet-spark-worker:3.4.1-hadoop3.3
     container_name: fbnet-spark-worker2
     hostname: spark-worker2
     networks:
@@ -42,7 +42,7 @@ services:
       - "SPARK_MASTER=spark://spark-master:7077"
 
   spark-history-server:
-    image: fcjbispo/spark-historyserver:3.4.1-hadoop3.3
+    image: fcjbispo/fbnet-spark-historyserver:3.4.1-hadoop3.3
     container_name: fbnet-spark-historyserver
     networks:
       - fbnet-hadoop
