@@ -54,19 +54,19 @@ services:
     volumes:
       - spark_historyserver:/tmp/spark-events
 
-  # spark-submit:
-  #   image: fcjbispo/fbnet-spark-submit:3.4.1-hadoop3.3
-  #   container_name: fbnet-spark-submit
-  #   networks:
-  #     - fbnet-hadoop
-  #   restart: always
-  #   depends_on:
-  #     - spark-master
-  #   ports:
-  #     - "8889:8888"
-  #   volumes:
-  #     - spark_submit:/var/jupyter
-  #   command: /bin/bash
+  spark-jupyter:
+    image: fcjbispo/fbnet-spark-jupyter:3.4.1-hadoop3.3
+    container_name: fbnet-spark-jupyter
+    networks:
+      - fbnet-hadoop
+    restart: always
+    depends_on:
+      - spark-master
+    ports:
+      - "8889:8888"
+    volumes:
+      - spark_submit:/var/jupyter
+    command: /bin/bash
 
 volumes:
   spark_historyserver:
@@ -82,7 +82,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: F:\FBNet\spark-cluster-submit
+      device: F:\FBNet\spark-cluster-jupyter
 
 networks:
   fbnet-hadoop:
