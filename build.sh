@@ -2,7 +2,7 @@
 
 set -e
 
-TAG=3.4.1-hadoop3.3
+TAG=$(git rev-parse --abbrev-ref HEAD)
 
 build() {
     NAME=$1
