@@ -2,7 +2,7 @@ FROM fcjbispo/fbnet-spark-base:3.4.1-hadoop3.3
 
 LABEL maintainer="Francisco C J Bispo <fcjbispo@franciscobispo.net>"
 
-# HEALTHCHECK CMD curl -f http://localhost:8888/ || exit 
+HEALTHCHECK CMD curl -f http://localhost:8888/ || exit 
 
 ARG SPARK_USER=fbnet
 

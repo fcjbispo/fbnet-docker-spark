@@ -20,6 +20,7 @@ if [ $# -eq 0 ]
     build worker
     build historyserver
     build submit
+    build jupyter
 #    build maven-template template/maven
 #    build sbt-template template/sbt
 #    build python-template template/python    
