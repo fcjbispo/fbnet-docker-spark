@@ -57,10 +57,13 @@ RUN set -x \
 
 RUN echo "export JAVA_HOME=${JAVA_HOME}" >> /home/$SPARK_USER/.bashrc
 RUN echo "export HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}" >> /home/$SPARK_USER/.bashrc
-RUN echo "export PATH=/home/$SPARK_USER/.local/bin:$JAVA_HOME/bin:$HADOOP_HOME/bin:$PATH" >> /home/$SPARK_USER/.bashrc
-RUN echo "export CLASSPATH=`$HADOOP_HOME/bin/hdfs classpath --glob`" >> /home/$SPARK_USER/.bashrc
-RUN echo "source /home/$SPARK_USER/.bin/activate" >> /home/$SPARK_USER/.bashrc
+RUN echo "export PATH=/home/$SPARK_USER/.local/bin:$JAVA_HOME/bin:/opt/hadoop-${HADOOP_VERSION}/bin:$PATH" >> /home/$SPARK_USER/.bashrc
+RUN echo "export CLASSPATH=`/opt/hadoop-${HADOOP_VERSION}/bin/hdfs classpath --glob`" >> /home/$SPARK_USER/.bashrc
+RUN echo "source /home/$SPARK_USER/.local/bin/activate" >> /home/$SPARK_USER/.bashrc
 
 RUN chown -R $SPARK_USER:$SPARK_USER /home/$SPARK_USER
+
+ENV HADOOP_NAMENODE_NAME=namenode
+ENV HADOOP_NAMENODE_PORT=9000
 
 CMD [ "/bin/bash", "/run.sh" ]

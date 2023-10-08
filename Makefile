@@ -19,7 +19,10 @@ historyserver: historyserver/Dockerfile
 jupyter: jupyter/Dockerfile
 	docker build -t ${IMAGE_PREFIX}-jupyter:$(TAG) ./jupyter
 
-all: base master worker historyserver jupyter
+submit: submit/Dockerfile
+	docker build -t ${IMAGE_PREFIX}-submit:$(TAG) ./submit
+
+all: base master worker historyserver jupyter submit
 	echo "Done: ${DOCKER_PROJECT}"
 
 up:
