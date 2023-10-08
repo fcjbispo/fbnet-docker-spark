@@ -3,10 +3,11 @@
 set -e
 
 TAG=$(git rev-parse --abbrev-ref HEAD)
+IMAGE_PREFIX=fcjbispo/fbnet-spark
 
 build() {
     NAME=$1
-    IMAGE=fcjbispo/fbnet-spark-$NAME:$TAG
+    IMAGE=$IMAGE_PREFIX-$NAME:$TAG
     cd $([ -z "$2" ] && echo "./$NAME" || echo "$2")
     echo '--------------------------' building $IMAGE in $(pwd)
     docker build -t $IMAGE .

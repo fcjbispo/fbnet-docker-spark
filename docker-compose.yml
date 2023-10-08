@@ -66,7 +66,8 @@ services:
       - "8889:8888"
     volumes:
       - spark_submit:/var/jupyter
-    command: /bin/bash
+    environment:
+      JUPYTER_USER_PASSWD: "_Admin123"
 
 volumes:
   spark_historyserver:
@@ -75,14 +76,14 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: F:\FBNet\spark-cluster-historyserver
+      device: /mnt/f/FBNet/spark-cluster-historyserver
   spark_submit:
     name: vol-spark_submit
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: F:\FBNet\spark-cluster-jupyter
+      device: /mnt/f/FBNet/spark-cluster-jupyter
 
 networks:
   fbnet-hadoop:
