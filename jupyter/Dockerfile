@@ -36,28 +36,7 @@ VOLUME /var/jupyter
 
 EXPOSE 8888
 
-RUN apk add --no-cache --update openjdk8 gnupg
-
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
-
-RUN curl -O https://dist.apache.org/repos/dist/release/hadoop/common/KEYS
-
-RUN gpg --import KEYS
-
-ENV HADOOP_VERSION 3.3.6
-ENV HADOOP_URL https://www.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
-
-RUN set -x \
-    && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
-    && curl -fSL "$HADOOP_URL.asc" -o /tmp/hadoop.tar.gz.asc \
-    && gpg --verify /tmp/hadoop.tar.gz.asc \
-    && tar -xvf /tmp/hadoop.tar.gz -C /opt/ \
-    && rm /tmp/hadoop.tar.gz*
-
-RUN echo "export JAVA_HOME=${JAVA_HOME}" >> /home/$SPARK_USER/.bashrc
-RUN echo "export HADOOP_HOME=/opt/hadoop-${HADOOP_VERSION}" >> /home/$SPARK_USER/.bashrc
-RUN echo "export PATH=/home/$SPARK_USER/.local/bin:$JAVA_HOME/bin:/opt/hadoop-${HADOOP_VERSION}/bin:$PATH" >> /home/$SPARK_USER/.bashrc
-RUN echo "export CLASSPATH=`/opt/hadoop-${HADOOP_VERSION}/bin/hdfs classpath --glob`" >> /home/$SPARK_USER/.bashrc
+RUN echo "export PATH=/home/$SPARK_USER/.local/bin" >> /home/$SPARK_USER/.bashrc
 RUN echo "source /home/$SPARK_USER/.local/bin/activate" >> /home/$SPARK_USER/.bashrc
 
 RUN chown -R $SPARK_USER:$SPARK_USER /home/$SPARK_USER
