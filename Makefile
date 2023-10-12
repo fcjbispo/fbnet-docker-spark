@@ -25,6 +25,10 @@ submit: submit/Dockerfile
 all: base master worker historyserver jupyter submit
 	echo "Done: ${DOCKER_PROJECT}"
 
+push: all
+	for IMAGE in base master worker historyserver jupyter submit; do docker image tag ${IMAGE_PREFIX}-$$IMAGE docker.io:5000/${IMAGE_PREFIX}-$$IMAGE; done
+	for IMAGE in base master worker historyserver jupyter submit; do docker image push docker.io:5000/${IMAGE_PREFIX}-$$IMAGE:$(TAG); done
+
 up:
 	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml up --detach
 
@@ -34,6 +38,3 @@ down:
 
 restart:
 	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml restart
-
-push: all
-	docker 
