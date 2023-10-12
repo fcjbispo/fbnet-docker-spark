@@ -13,6 +13,7 @@ ENV JUPYTER_USER_PASSWD=_Admin123
 
 COPY submit.sh /
 COPY run.sh /
+COPY requeriments.txt /
 
 RUN apk add --no-cache --update alpine-sdk \
     && apk add --no-cache libffi-dev openssl-dev rust cargo \
@@ -27,9 +28,7 @@ RUN mkdir -pv /var/jupyter \
     && chown -R $SPARK_USER:$SPARK_USER /var/jupyter \
     && python -m venv /home/$SPARK_USER/.local \
     && source ./home/$SPARK_USER/.local/bin/activate \
-    && pip install ipython jupyterlab \
-        jupytext pyspark==3.4.1 pandas requests sqlalchemy \
-        matplotlib scikit-learn seaborn theano keras
+    && pip install -r /requeriments.txt
 
 COPY /jupyterlab.sh /home/$SPARK_USER/jupyterlab.sh
 

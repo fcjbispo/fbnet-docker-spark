@@ -1,0 +1,13 @@
+ipython 
+jupyterlab
+jupytext
+pyspark==3.4.1
+pandas
+requests
+sqlalchemy
+matplotlib
+scikit-learn
+seaborn
+theano
+keras
+tqdm

@@ -30,6 +30,10 @@ up:
 
 down:
 	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml down
+	for v in vol-spark_historyserver vol-spark_jupyter; do docker volume rm --force $$v; done
 
 restart:
 	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml restart
+
+push: all
+	docker 
