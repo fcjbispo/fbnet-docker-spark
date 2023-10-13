@@ -16,8 +16,9 @@ COPY run.sh /
 COPY requeriments.txt /
 
 RUN apk add --no-cache --update alpine-sdk \
-    && apk add --no-cache libffi-dev openssl-dev rust cargo \
-    && apk --no-cache --update add build-base python3-dev sudo
+    && apk add --no-cache libffi-dev openssl-dev \
+    && apk --no-cache add build-base python3-dev sudo \
+    && apk --no-cache add openssh sshpass
 
 RUN adduser -D -s /bin/bash $JUPYTER_USER \ 
     && adduser $JUPYTER_USER wheel \
@@ -36,7 +37,7 @@ VOLUME /var/jupyter
 
 EXPOSE 8888
 
-RUN echo "export PATH=/home/$SPARK_USER/.local/bin" >> /home/$SPARK_USER/.bashrc
+RUN echo "export PATH=/home/$SPARK_USER/.local/bin:$PATH" >> /home/$SPARK_USER/.bashrc
 RUN echo "source /home/$SPARK_USER/.local/bin/activate" >> /home/$SPARK_USER/.bashrc
 
 RUN chown -R $SPARK_USER:$SPARK_USER /home/$SPARK_USER

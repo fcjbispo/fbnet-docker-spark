@@ -38,3 +38,7 @@ down:
 
 restart:
 	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml restart
+
+stop:
+	docker compose -p ${DOCKER_PROJECT} -f ./docker-compose.yml stop
+
