@@ -63,7 +63,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "8889:8888"
+      - "8888:8888"
     volumes:
       - spark_jupyter:/var/jupyter
     environment:
@@ -76,14 +76,14 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /mnt/f/FBNet/spark-cluster-historyserver
+      device: D:\FBNet\spark-cluster-historyserver
   spark_jupyter:
     name: vol-spark_jupyter
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: /mnt/f/FBNet/spark-cluster-jupyter
+      device: Z:\FBNet\spark-cluster-jupyter
 
 networks:
   fbnet-hadoop:
